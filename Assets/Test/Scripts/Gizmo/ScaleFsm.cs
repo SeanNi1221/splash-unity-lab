@@ -51,14 +51,14 @@ public class ScaleFsm : FlatFSM<SelectionGizmoRig> {
         }
         break;
       case State.Hovered:
-        if (Input.GetMouseButton(0)) {
+        if (Handle.Dragged is ScaleHandle) {
           SwitchTo(State.Dragging);
         } else if (!Handle.Hovered) {
           SwitchTo(State.Idle);
         }
         break;
       case State.Dragging:
-        if (!Input.GetMouseButton(0)) {
+        if (Handle.Dragged is not ScaleHandle) {
           SwitchTo(State.Idle);
         }
         break;
@@ -67,6 +67,7 @@ public class ScaleFsm : FlatFSM<SelectionGizmoRig> {
     }
     base.Update();
   }
+
   protected override void Initialize() {
     _availableStates = new Dictionary<System.Enum, FlatState> {
       { State.Idle, new Idle() },

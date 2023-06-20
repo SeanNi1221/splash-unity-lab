@@ -7,18 +7,19 @@ using UnityEngine.EventSystems;
 public class FlexibleHandle : Handle, IPointerClickHandler {
   private static readonly Color _normalColor = Color.white;
   private static readonly Color _hoveredColor = new Color(0.8f, 0.8f, 0.8f, 1);
-  [SerializeField] protected GameObject _idle;
-  [SerializeField] protected GameObject _dragged;
-  [SerializeField] protected GameObject _selected;
+  [SerializeField] protected GizmoAnchor _preferredAnchor;
+  [SerializeField] protected GameObject _idleGO;
+  [SerializeField] protected GameObject _draggedGO;
+  [SerializeField] protected GameObject _selectedGO;
   private Image _idleImage;
   private Image _selectedImage;
   public virtual void OnPointerClick(PointerEventData eventData) {
     if (Hovered == this) {
       bool alreadySelected = Selected == this;
       Selected = alreadySelected ? null : this;
-      _idle.SetActive(alreadySelected);
-      _dragged.SetActive(false);
-      _selected.SetActive(!alreadySelected);
+      _idleGO.SetActive(alreadySelected);
+      _draggedGO.SetActive(false);
+      _selectedGO.SetActive(!alreadySelected);
     }
   }
 
@@ -34,16 +35,16 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
 
   public override void OnPointerDown(PointerEventData eventData) {
     base.OnPointerDown(eventData);
-    _idle.SetActive(false);
-    _dragged.SetActive(true);
-    _selected.SetActive(false);
+    _idleGO.SetActive(false);
+    _draggedGO.SetActive(true);
+    _selectedGO.SetActive(false);
   }
 
   public override void OnPointerUp(PointerEventData eventData) {
     base.OnPointerUp(eventData);
-    _idle.SetActive(true);
-    _dragged.SetActive(false);
-    _selected.SetActive(false);
+    _idleGO.SetActive(true);
+    _draggedGO.SetActive(false);
+    _selectedGO.SetActive(false);
   }
 
   protected virtual void OnDisable() {
@@ -57,26 +58,26 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
       Selected = null;
     }
     _idleImage.color = _selectedImage.color = _normalColor;
-    _idle.SetActive(true);
-    _dragged.SetActive(false);
-    _selected.SetActive(false);
+    _idleGO.SetActive(true);
+    _draggedGO.SetActive(false);
+    _selectedGO.SetActive(false);
   }
 
   protected override void Awake() {
     base.Awake();
-    _idleImage = _idle.GetComponent<Image>();
-    _selectedImage = _selected.GetComponent<Image>();
+    _idleImage = _idleGO.GetComponent<Image>();
+    _selectedImage = _selectedGO.GetComponent<Image>();
   }
   protected override void OnValidate() {
     base.OnValidate();
-    if (!_idle) {
-      _idle = transform.Find("Idle").gameObject;
+    if (!_idleGO) {
+      _idleGO = transform.Find("Idle").gameObject;
     }
-    if (!_dragged) {
-      _dragged = transform.Find("Dragged").gameObject;
+    if (!_draggedGO) {
+      _draggedGO = transform.Find("Dragged").gameObject;
     }
-    if (!_selected) {
-      _selected = transform.Find("Selected").gameObject;
+    if (!_selectedGO) {
+      _selectedGO = transform.Find("Selected").gameObject;
     }
   }
 }
