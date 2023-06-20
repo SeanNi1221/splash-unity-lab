@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class FlexibleHandle : Handle, IPointerClickHandler {
+  private static readonly Color _normalColor = Color.white;
+  private static readonly Color _hoveredColor = new Color(0.8f, 0.8f, 0.8f, 1);
+  [SerializeField] protected GameObject _idle;
+  [SerializeField] protected GameObject _dragged;
+  [SerializeField] protected GameObject _selected;
+  private Image _idleImage;
+  private Image _selectedImage;
+  public virtual void OnPointerClick(PointerEventData eventData) {
+    if (Hovered == this) {
+      bool alreadySelected = Selected == this;
+      Selected = alreadySelected ? null : this;
+      _idle.SetActive(alreadySelected);
+      _dragged.SetActive(false);
+      _selected.SetActive(!alreadySelected);
+    }
+  }
+
+  public override void OnPointerEnter(PointerEventData eventData) {
+    base.OnPointerEnter(eventData);
+    _idleImage.color = _selectedImage.color = _hoveredColor;
+  }
+
+  public override void OnPointerExit(PointerEventData eventData) {
+    base.OnPointerExit(eventData);
+    _idleImage.color = _selectedImage.color = _normalColor;
+  }
+
+  public override void OnPointerDown(PointerEventData eventData) {
+    base.OnPointerDown(eventData);
+    _idle.SetActive(false);
+    _dragged.SetActive(true);
+    _selected.SetActive(false);
+  }
+
+  public override void OnPointerUp(PointerEventData eventData) {
+    base.OnPointerUp(eventData);
+    _idle.SetActive(true);
+    _dragged.SetActive(false);
+    _selected.SetActive(false);
+  }
+
+  protected virtual void OnDisable() {
+    if (Hovered == this) {
+      Hovered = null;
+    }
+    if (Dragged == this) {
+      Dragged = null;
+    }
+    if (Selected == this) {
+      Selected = null;
+    }
+    _idleImage.color = _selectedImage.color = _normalColor;
+    _idle.SetActive(true);
+    _dragged.SetActive(false);
+    _selected.SetActive(false);
+  }
+
+  protected override void Awake() {
+    base.Awake();
+    _idleImage = _idle.GetComponent<Image>();
+    _selectedImage = _selected.GetComponent<Image>();
+  }
+  protected override void OnValidate() {
+    base.OnValidate();
+    if (!_idle) {
+      _idle = transform.Find("Idle").gameObject;
+    }
+    if (!_dragged) {
+      _dragged = transform.Find("Dragged").gameObject;
+    }
+    if (!_selected) {
+      _selected = transform.Find("Selected").gameObject;
+    }
+  }
+}
