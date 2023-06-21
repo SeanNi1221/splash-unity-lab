@@ -3,23 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GuidlineRig : MonoBehaviour {
+  private static GuidlineRig _instance;
   [SerializeField]
   private Guidline3x3 _down, _forward, _left, _right;
 
-  public void UpdateGrids(Bounds source) {
-    UpdateSizes(source);
-    UpdateLenghts(source);
-    _down.UpdateLines();
-    _forward.UpdateLines();
-    _left.UpdateLines();
-    _right.UpdateLines();
+  public static void UpdateGrids(Bounds source) {
+    _instance.UpdateSizes(source);
+    _instance.UpdateLenghts(source);
+    _instance._down.UpdateLines();
+    _instance._forward.UpdateLines();
+    _instance._left.UpdateLines();
+    _instance._right.UpdateLines();
   }
 
-  public void UpdatePositions(Bounds source) {
-    _down.transform.position = new Vector3(source.center.x, source.min.y, source.center.z);
-    _forward.transform.position = new Vector3(source.center.x, source.center.y, source.max.z);
-    _left.transform.position = new Vector3(source.min.x, source.center.y, source.center.z);
-    _right.transform.position = new Vector3(source.max.x, source.center.y, source.center.z);
+  public static void UpdatePositions(Bounds source) {
+    _instance._down.transform.position = new Vector3(source.center.x, source.min.y, source.center.z);
+    _instance._forward.transform.position = new Vector3(source.center.x, source.center.y, source.max.z);
+    _instance._left.transform.position = new Vector3(source.min.x, source.center.y, source.center.z);
+    _instance._right.transform.position = new Vector3(source.max.x, source.center.y, source.center.z);
+  }
+
+  public static void Show() {
+    _instance.gameObject.SetActive(true);
+  }
+
+  public static void Hide() {
+    _instance.gameObject.SetActive(false);
+  }
+
+  public void Awake() {
+    _instance = this;
   }
 
   private void OnValidate() {

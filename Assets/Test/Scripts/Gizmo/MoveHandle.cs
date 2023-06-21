@@ -12,14 +12,14 @@ public class MoveHandle : FlexibleHandle {
   }
 
   private IEnumerator MoveCoroutine() {
-    _gameManager.Selected.Drag.SetPlane();
-    _gameManager.GuidlineRig.UpdateGrids(_gameManager.Selected.Renderer.bounds);
-    _gameManager.GuidlineRig.gameObject.SetActive(true);
+    GameManager.Selected.ViewSpaceMover.SetPlane();
+    GuidlineRig.UpdateGrids(GameManager.Selected.Renderer.bounds);
+    GuidlineRig.Show();
     while (Dragged == this) {
-      _gameManager.Selected.Drag.UpdatePosition();
-      _gameManager.GuidlineRig.UpdatePositions(_gameManager.Selected.Renderer.bounds);
+      GameManager.Selected.ViewSpaceMover.UpdatePosition();
+      GuidlineRig.UpdatePositions(GameManager.Selected.Renderer.bounds);
       yield return null;
     }
-    _gameManager.GuidlineRig.gameObject.SetActive(false);
+    GuidlineRig.Hide();
   }
 }

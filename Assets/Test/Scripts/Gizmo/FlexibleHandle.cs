@@ -13,8 +13,9 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
   [SerializeField] protected GameObject _selectedGO;
   private Image _idleImage;
   private Image _selectedImage;
+  private Vector3 _mouseDownPosition;
   public virtual void OnPointerClick(PointerEventData eventData) {
-    if (Hovered == this) {
+    if (Input.mousePosition == _mouseDownPosition) {
       bool alreadySelected = Selected == this;
       Selected = alreadySelected ? null : this;
       _idleGO.SetActive(alreadySelected);
@@ -38,6 +39,7 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
     _idleGO.SetActive(false);
     _draggedGO.SetActive(true);
     _selectedGO.SetActive(false);
+    _mouseDownPosition = Input.mousePosition;
   }
 
   public override void OnPointerUp(PointerEventData eventData) {

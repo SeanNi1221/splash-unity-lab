@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ViewSpaceDrag {
+public class ViewSpaceMover {
   public readonly Camera Camera;
   private Ray _pointerRay => Camera.ScreenPointToRay(Input.mousePosition);
   private Selectable _obj;
   private Vector3 _offset;
   private Plane _draggingPlane;
-  public ViewSpaceDrag(Camera camera, Selectable obj) {
+  public ViewSpaceMover(Camera camera, Selectable obj) {
     Camera = camera;
     _obj = obj;
   }

@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestGameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-  public Selectable Hovered { get; private set;}
-  public  Selectable Selected { get; private set;}
-  public bool IsDragging { get; private set; }
+  public static Selectable Hovered { get; private set;}
+  public static Selectable Selected { get; private set;}
+  public static bool IsDragging { get; private set; }
   public bool IsOrbiting { get; private set; }
   public SelectionGizmoRig SelectionGizmoRig => _selectionGizmoRig;
-  public GuidlineRig GuidlineRig => _guidlineRig;
   [SerializeField] private SelectionGizmoRig _selectionGizmoRig;
   [SerializeField] private GuidlineRig _guidlineRig;
   private OrbitController _controller;
@@ -26,6 +25,7 @@ public class TestGameManager : MonoBehaviour
 
   void Awake() {
     _controller = new OrbitController(Camera.main);
+    _guidlineRig.Awake();
   }
 
   void Update() {

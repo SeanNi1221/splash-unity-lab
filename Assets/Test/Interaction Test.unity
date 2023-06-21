@@ -1742,9 +1742,11 @@ MonoBehaviour:
   _horverdCursor: {fileID: 0}
   _draggedCursor: {fileID: 0}
   _cursorHotspot: {x: 0, y: 0}
-  _idle: {fileID: 268291392}
-  _dragged: {fileID: 137855596}
-  _selected: {fileID: 472423591}
+  _gameManager: {fileID: 1233717537}
+  _preferredAnchor: 0
+  _idleGO: {fileID: 268291392}
+  _draggedGO: {fileID: 137855596}
+  _selectedGO: {fileID: 472423591}
 --- !u!1 &838535384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,6 +1886,7 @@ MonoBehaviour:
   _horverdCursor: {fileID: 2800000, guid: 500bd18bd9b5a5645abb6ad470680caa, type: 3}
   _draggedCursor: {fileID: 2800000, guid: 500bd18bd9b5a5645abb6ad470680caa, type: 3}
   _cursorHotspot: {x: 8, y: 8}
+  _gameManager: {fileID: 1233717537}
 --- !u!1 &890394653
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,6 +2638,7 @@ MonoBehaviour:
   _horverdCursor: {fileID: 2800000, guid: 0aea531c450545545914c597bf83dab3, type: 3}
   _draggedCursor: {fileID: 2800000, guid: 0aea531c450545545914c597bf83dab3, type: 3}
   _cursorHotspot: {x: 8, y: 8}
+  _gameManager: {fileID: 1233717537}
 --- !u!1 &1044873687
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,9 +3306,11 @@ MonoBehaviour:
   _horverdCursor: {fileID: 0}
   _draggedCursor: {fileID: 0}
   _cursorHotspot: {x: 0, y: 0}
-  _idle: {fileID: 1593330486}
-  _dragged: {fileID: 136667202}
-  _selected: {fileID: 1141829603}
+  _gameManager: {fileID: 1233717537}
+  _preferredAnchor: 0
+  _idleGO: {fileID: 1593330486}
+  _draggedGO: {fileID: 136667202}
+  _selectedGO: {fileID: 1141829603}
 --- !u!1 &1201370571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,7 +3429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae3c92ef80c5f04e8ac2b46e4b06de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _frame: {fileID: 1233717539}
+  _selectionGizmoRig: {fileID: 1233717539}
   _guidlineRig: {fileID: 1227411656}
 --- !u!4 &1233717538
 Transform:
@@ -3595,6 +3601,7 @@ MonoBehaviour:
   _horverdCursor: {fileID: 2800000, guid: 500bd18bd9b5a5645abb6ad470680caa, type: 3}
   _draggedCursor: {fileID: 2800000, guid: 500bd18bd9b5a5645abb6ad470680caa, type: 3}
   _cursorHotspot: {x: 8, y: 8}
+  _gameManager: {fileID: 1233717537}
 --- !u!4 &1320063899 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 829429771164315240, guid: 7a291746ef7a98a4598ebac1ba8a7c48,
@@ -4400,6 +4407,7 @@ MonoBehaviour:
   _horverdCursor: {fileID: 2800000, guid: 0aea531c450545545914c597bf83dab3, type: 3}
   _draggedCursor: {fileID: 2800000, guid: 0aea531c450545545914c597bf83dab3, type: 3}
   _cursorHotspot: {x: 8, y: 8}
+  _gameManager: {fileID: 1233717537}
 --- !u!1 &1582445116
 GameObject:
   m_ObjectHideFlags: 0

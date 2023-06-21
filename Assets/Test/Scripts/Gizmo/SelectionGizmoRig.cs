@@ -7,11 +7,10 @@ using UnityEngine.UI;
 public class SelectionGizmoRig : MonoBehaviour {
   private static readonly Vector2 _paddingInPixel = new Vector2(16, 16);
   // public ScaleFsm HandleFsm => _handleFsm;
-  public TestGameManager Manager => _manager;
+  public GameManager Manager => _manager;
   [SerializeField] private RectTransform _frameRect;
-  [SerializeField] private TestGameManager _manager;
+  [SerializeField] private GameManager _manager;
   [SerializeField] private Camera _camera;
-  private Selectable _selected => _manager.Selected;
   // private ScaleFsm _handleFsm;
   private float _inputDeltaX => Input.GetAxis("Mouse X");
   private float _inputDeltaY => Input.GetAxis("Mouse Y");
@@ -31,7 +30,7 @@ public class SelectionGizmoRig : MonoBehaviour {
       _frameRect = GameObject.Find("Canvas/SelectionFrame").transform as RectTransform;
     }
     if (!_manager) {
-      _manager = FindObjectOfType<TestGameManager>();
+      _manager = FindObjectOfType<GameManager>();
     }
     if (!_camera) {
       _camera = Camera.main;
@@ -39,8 +38,8 @@ public class SelectionGizmoRig : MonoBehaviour {
   }
 
   private void Update() {
-    if (_selected) {
-      UpdateFrame(_frameRect, _selected.Renderer);
+    if (GameManager.Selected) {
+      UpdateFrame(_frameRect, GameManager.Selected.Renderer);
     }
     // _handleFsm.Update();
   }
@@ -88,8 +87,8 @@ public class SelectionGizmoRig : MonoBehaviour {
   }
 
   private void OnDrawGizmos() {
-    if (_selected) {
-      var r = _selected.GetComponent<Renderer>();
+    if (GameManager.Selected) {
+      var r = GameManager.Selected.GetComponent<Renderer>();
       if (r) {
         var corners = GetBoundsCorners(r);
         for (int i = 0; i < 8; i++) {

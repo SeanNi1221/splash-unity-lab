@@ -65,7 +65,7 @@ public class ScaleHandle : Handle {
     indicator.Show();
     while (Dragged == this) {
       float scaleDelta = _anchorToScaleDelta[Anchor]();
-      Transform t = _gameManager.Selected.transform;
+      Transform t = GameManager.Selected.transform;
       t.localScale *= 1 + scaleDelta;
       indicator.SetValue(Mathf.Max(t.localScale.x, t.localScale.y, t.localScale.z));
       yield return null;
