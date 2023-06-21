@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SelectionGizmoRig : MonoBehaviour {
-  public static readonly Vector2 ScaleCursorHotspot = new Vector2(8, 8);
   private static readonly Vector2 _paddingInPixel = new Vector2(16, 16);
   // public ScaleFsm HandleFsm => _handleFsm;
   public TestGameManager Manager => _manager;

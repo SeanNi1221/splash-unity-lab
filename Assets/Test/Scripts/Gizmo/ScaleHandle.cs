@@ -61,7 +61,7 @@ public class ScaleHandle : Handle {
   }
 
   private IEnumerator ScaleCoroutine() {
-    Gizmo indicator = Gizmo.Catalog[GizmoGroup.ScaleIndicator][Anchor];
+    Gizmo indicator = Catalog[GizmoGroup.ScaleIndicator][Anchor];
     indicator.Show();
     while (Dragged == this) {
       float scaleDelta = _anchorToScaleDelta[Anchor]();

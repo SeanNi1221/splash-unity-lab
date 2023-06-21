@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ViewSpaceDrag {
   public readonly Camera Camera;
-  private static Ray _pointerRay => TestGameManager.PointerRay;
+  private Ray _pointerRay => Camera.ScreenPointToRay(Input.mousePosition);
   private Selectable _obj;
   private Vector3 _offset;
   private Plane _draggingPlane;

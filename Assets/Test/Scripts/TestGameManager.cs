@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class TestGameManager : MonoBehaviour
 {
-  public static Ray PointerRay { get; private set; }
   public Selectable Hovered { get; private set;}
   public  Selectable Selected { get; private set;}
   public bool IsDragging { get; private set; }
   public bool IsOrbiting { get; private set; }
-  public SelectionGizmoRig Frame => _frame;
+  public SelectionGizmoRig SelectionGizmoRig => _selectionGizmoRig;
   public GuidlineRig GuidlineRig => _guidlineRig;
-  [SerializeField] private SelectionGizmoRig _frame;
+  [SerializeField] private SelectionGizmoRig _selectionGizmoRig;
   [SerializeField] private GuidlineRig _guidlineRig;
   private OrbitController _controller;
+  private Ray _pointerRay => Camera.main.ScreenPointToRay(Input.mousePosition);
 
   private void OnValidate() {
-    if (!_frame) {
-      _frame = GetComponent<SelectionGizmoRig>();
+    if (!_selectionGizmoRig) {
+      _selectionGizmoRig = GetComponent<SelectionGizmoRig>();
     }
     if (!_guidlineRig) {
       _guidlineRig = GetComponentInChildren<GuidlineRig>();
@@ -37,7 +37,7 @@ public class TestGameManager : MonoBehaviour
       _controller.OrbitBy(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
 
-    Frame.enabled = Selected && !IsOrbiting && !IsDragging || Handle.Dragged;
+    SelectionGizmoRig.enabled = Selected && !IsOrbiting && !IsDragging || Handle.Dragged;
   }
 
   private void TryHover() {
@@ -45,8 +45,7 @@ public class TestGameManager : MonoBehaviour
       Hovered = null;
       return;
     }
-    PointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-    if (Physics.Raycast(PointerRay, out RaycastHit hit, 1000, 1 << LayerMask.NameToLayer("Selectable"))) {
+    if (Physics.Raycast(_pointerRay, out RaycastHit hit, 1000, 1 << LayerMask.NameToLayer("Selectable"))) {
       var selectable = hit.collider.GetComponent<Selectable>();
       if (selectable) {
         Hovered = selectable;
