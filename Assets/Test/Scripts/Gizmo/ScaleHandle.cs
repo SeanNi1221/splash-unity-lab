@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ScaleHandle : Handle
-{
+public class ScaleHandle : Handle {
   private const float _scaleRatio = 0.1f;
   private static Vector2 _forceCursorHotspot = new Vector2(8, 8);
   private static float _inputDeltaX => Input.GetAxis("Mouse X");
@@ -41,10 +41,12 @@ public class ScaleHandle : Handle
       };
 # endif
 
-  public override object CalcValue() {
-    return _anchorToScaleDelta[Anchor]();
+  public override void OnPointerDown(PointerEventData eventData) {
+    base.OnPointerDown(eventData);
+    if (Dragged == this) {
+      StartCoroutine(ScaleCoroutine());
+    }
   }
-
   protected override void OnValidate() {
     base.OnValidate();
     _cursorHotspot = _forceCursorHotspot;
@@ -56,5 +58,18 @@ public class ScaleHandle : Handle
       }
     }
 #endif
+  }
+
+  private IEnumerator ScaleCoroutine() {
+    Gizmo indicator = Gizmo.Catalog[GizmoGroup.ScaleIndicator][Anchor];
+    indicator.Show();
+    while (Dragged == this) {
+      float scaleDelta = _anchorToScaleDelta[Anchor]();
+      Transform t = _gameManager.Selected.transform;
+      t.localScale *= 1 + scaleDelta;
+      indicator.SetValue(Mathf.Max(t.localScale.x, t.localScale.y, t.localScale.z));
+      yield return null;
+    }
+    indicator.Hide();
   }
 }

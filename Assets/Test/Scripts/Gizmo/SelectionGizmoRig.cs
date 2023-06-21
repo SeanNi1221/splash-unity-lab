@@ -7,18 +7,18 @@ using UnityEngine.UI;
 public class SelectionGizmoRig : MonoBehaviour {
   public static readonly Vector2 ScaleCursorHotspot = new Vector2(8, 8);
   private static readonly Vector2 _paddingInPixel = new Vector2(16, 16);
-  public ScaleFsm HandleFsm => _handleFsm;
+  // public ScaleFsm HandleFsm => _handleFsm;
   public TestGameManager Manager => _manager;
   [SerializeField] private RectTransform _frameRect;
   [SerializeField] private TestGameManager _manager;
   [SerializeField] private Camera _camera;
   private Selectable _selected => _manager.Selected;
-  private ScaleFsm _handleFsm;
+  // private ScaleFsm _handleFsm;
   private float _inputDeltaX => Input.GetAxis("Mouse X");
   private float _inputDeltaY => Input.GetAxis("Mouse Y");
   private void OnEnable() {
     _frameRect.gameObject.SetActive(true);
-    _handleFsm = new ScaleFsm(this);
+    // _handleFsm = new ScaleFsm(this);
   }
 
   private void OnDisable() {
@@ -43,7 +43,7 @@ public class SelectionGizmoRig : MonoBehaviour {
     if (_selected) {
       UpdateFrame(_frameRect, _selected.Renderer);
     }
-    _handleFsm.Update();
+    // _handleFsm.Update();
   }
 
   private void UpdateFrame(RectTransform frame, Renderer renderer) {

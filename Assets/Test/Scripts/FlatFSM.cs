@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class FlatState<T> : FlatState {
-  public T Context { get; private set; }
-
-  public void PostInitialize(FlatFSM<T> fsm) {
-    Context = fsm.Context;
-  }
-}
+// public abstract class FlatState<T> : FlatState {
+//   public T Context { get; private set; }
+//   protected FlatFSM<T> _fsm;
+//   public void PostInitialize(FlatFSM<T> fsm) {
+//     Context = fsm.Context;
+//   }
+// }
 
 public abstract class FlatState {
   protected FlatFSM _fsm;
@@ -22,15 +22,15 @@ public abstract class FlatState {
   }
 }
 
-public abstract class FlatFSM<T> : FlatFSM {
-  public readonly T Context;
-  public FlatFSM(T context) : base() {
-    Context = context;
-    foreach (var state in _availableStates.Values) {
-      ((FlatState<T>)state).PostInitialize(this);
-    }
-  }
-}
+// public abstract class FlatFSM<T> : FlatFSM {
+//   public readonly T Context;
+//   public FlatFSM(T context) : base() {
+//     Context = context;
+//     foreach (var state in _availableStates.Values) {
+//       ((FlatState<T>)state).PostInitialize(this);
+//     }
+//   }
+// }
 
 public abstract class FlatFSM {
   public System.Enum Current { get; private set; }

@@ -12,6 +12,7 @@ IPointerDownHandler, IPointerUpHandler {
   [SerializeField] protected Texture2D _horverdCursor;
   [SerializeField] protected Texture2D _draggedCursor;
   [SerializeField] protected Vector2 _cursorHotspot;
+  [SerializeField] protected TestGameManager _gameManager;
   public virtual void OnPointerEnter(PointerEventData eventData) {
     Hovered = this;
     if (_horverdCursor) {
@@ -38,6 +39,13 @@ IPointerDownHandler, IPointerUpHandler {
       if (_draggedCursor) {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
       }
+    }
+  }
+
+  protected override void OnValidate() {
+    base.OnValidate();
+    if (!_gameManager) {
+      _gameManager = FindObjectOfType<TestGameManager>();
     }
   }
 }
