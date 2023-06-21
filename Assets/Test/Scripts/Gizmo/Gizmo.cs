@@ -5,7 +5,6 @@ public enum GizmoGroup {
   Default,
   Frame,
   MoveHandle,
-  ScaleHandle,
   ScaleIndicator,
   AngleIndicator,
 }
@@ -37,7 +36,6 @@ public class Gizmo : MonoBehaviour {
       new Dictionary<string, GizmoGroup>() {
           { "Frame", GizmoGroup.Frame },
           { "MoveHandle", GizmoGroup.MoveHandle },
-          { "ScaleHandle", GizmoGroup.ScaleHandle },
           { "ScaleIndicator", GizmoGroup.ScaleIndicator },
           { "AngleIndicator", GizmoGroup.AngleIndicator },
       };
@@ -57,6 +55,14 @@ public class Gizmo : MonoBehaviour {
 #endif
 
   public bool isShown => gameObject.activeSelf;
+
+  public static void ShowGroup(GizmoGroup group) {
+    if (Catalog.TryGetValue(group, out Dictionary<GizmoAnchor, Gizmo> gizmos)) {
+      foreach (Gizmo gizmo in gizmos.Values) {
+        gizmo.Show();
+      }
+    }
+  }
 
   public static void HideGroup(GizmoGroup group) {
     if (Catalog.TryGetValue(group, out Dictionary<GizmoAnchor, Gizmo> gizmos)) {

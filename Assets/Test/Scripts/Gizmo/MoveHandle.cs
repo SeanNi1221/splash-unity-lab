@@ -16,12 +16,14 @@ public class MoveHandle : FlexibleHandle {
     GameManager.Selected.ViewSpaceMover.SetPlane();
     GuidlineRig.UpdateGrids(GameManager.Selected.Renderer.bounds);
     GuidlineRig.Show();
+    HideGroup(GizmoGroup.Frame);
     while (Dragged == this) {
       GameManager.Selected.ViewSpaceMover.UpdatePosition();
       GuidlineRig.UpdatePositions(GameManager.Selected.Renderer.bounds);
       yield return null;
     }
     GuidlineRig.Hide();
+    ShowGroup(GizmoGroup.Frame);
     yield return AdaptVisibilitiesCoroutine();
   }
 }
