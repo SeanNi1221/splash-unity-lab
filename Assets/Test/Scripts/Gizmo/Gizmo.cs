@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum GizmoGroup {
   Default,
+  Frame,
   MoveHandle,
   ScaleHandle,
   ScaleIndicator,
@@ -28,12 +29,13 @@ public class Gizmo : MonoBehaviour {
 
   public GizmoGroup Group => _group;
   public GizmoAnchor Anchor => _anchor;
-  [SerializeField] private GizmoGroup _group;
-  [SerializeField] private GizmoAnchor _anchor;
+  [SerializeField] protected GizmoGroup _group;
+  [SerializeField] protected GizmoAnchor _anchor;
 
 #if UNITY_EDITOR
   private static readonly Dictionary<string, GizmoGroup> _prefixToType =
       new Dictionary<string, GizmoGroup>() {
+          { "Frame", GizmoGroup.Frame },
           { "MoveHandle", GizmoGroup.MoveHandle },
           { "ScaleHandle", GizmoGroup.ScaleHandle },
           { "ScaleIndicator", GizmoGroup.ScaleIndicator },
@@ -53,6 +55,8 @@ public class Gizmo : MonoBehaviour {
           { "Right", GizmoAnchor.Right },
       };
 #endif
+
+  public bool isShown => gameObject.activeSelf;
 
   public static void HideGroup(GizmoGroup group) {
     if (Catalog.TryGetValue(group, out Dictionary<GizmoAnchor, Gizmo> gizmos)) {

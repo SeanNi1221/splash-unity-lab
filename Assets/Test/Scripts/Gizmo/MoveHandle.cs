@@ -12,6 +12,7 @@ public class MoveHandle : FlexibleHandle {
   }
 
   private IEnumerator MoveCoroutine() {
+    yield return new WaitForSeconds(0.1f);
     GameManager.Selected.ViewSpaceMover.SetPlane();
     GuidlineRig.UpdateGrids(GameManager.Selected.Renderer.bounds);
     GuidlineRig.Show();
@@ -21,5 +22,6 @@ public class MoveHandle : FlexibleHandle {
       yield return null;
     }
     GuidlineRig.Hide();
+    yield return AdaptVisibilitiesCoroutine();
   }
 }

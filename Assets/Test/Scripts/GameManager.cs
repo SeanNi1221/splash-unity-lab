@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class GameManager : MonoBehaviour
   public static Selectable Selected { get; private set;}
   public static bool IsDragging { get; private set; }
   public bool IsOrbiting { get; private set; }
-  public SelectionGizmoRig SelectionGizmoRig => _selectionGizmoRig;
   [SerializeField] private SelectionGizmoRig _selectionGizmoRig;
   [SerializeField] private GuidlineRig _guidlineRig;
   private OrbitController _controller;
@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
   void Awake() {
     _controller = new OrbitController(Camera.main);
     _guidlineRig.Awake();
+    FlexibleHandle.PreferredAnchors[GizmoGroup.MoveHandle] = new List<GizmoAnchor>() {
+        GizmoAnchor.Right,
+        GizmoAnchor.Left,
+    };
   }
 
   void Update() {
@@ -37,7 +41,8 @@ public class GameManager : MonoBehaviour
       _controller.OrbitBy(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
 
-    SelectionGizmoRig.enabled = Selected && !IsOrbiting && !IsDragging || Handle.Dragged;
+    _selectionGizmoRig.enabled = Selected && Selected.Current != SelectableState.Dragged
+        && !IsOrbiting;
   }
 
   private void TryHover() {
@@ -62,6 +67,7 @@ public class GameManager : MonoBehaviour
       } else if (Hovered) {
         Selected = Hovered;
       } else {
+        Debug.Log("Deselect");
         Selected = null;
       }
     }

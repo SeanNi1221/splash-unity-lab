@@ -18,42 +18,49 @@ public class Selectable : MonoBehaviour {
   [SerializeField] private MeshRenderer _renderer;
   [SerializeField] private GameManager _gameManager;
 
-  public SelectableState Current {
-    get => _current_OnlyForCache;
-    private set {
-      // State exit
-      switch (_current_OnlyForCache) {
-        case SelectableState.Dragged:
-          GuidlineRig.Hide();
-          break;
-        default:
-          break;
-      }
+  public SelectableState Current { get; private set; }
 
-      _current_OnlyForCache = value;
-      // State enter
-      switch (value) {
-        case SelectableState.Idle:
-          _renderer.enabled = false;
-          break;
-        case SelectableState.Hovered:
-          _renderer.enabled = true;
-          _renderer.material.color = _hoveredColor;
-          break;
-        case SelectableState.Selected:
-          _renderer.material.color = _selectedColor;
-          break;
-        case SelectableState.Dragged:
-          ViewSpaceMover.SetPlane();
-          GuidlineRig.UpdateGrids(_renderer.bounds);
-          GuidlineRig.Show();
-          break;
-        default:
-          break;
-      }
+  public void TransitTo(SelectableState state) {
+    if (Current == state) {
+      Debug.LogWarning($"The state is already {state}");
+      return;
+    }
+
+    // State exit
+    switch (Current) {
+      case SelectableState.Selected:
+        break;
+      case SelectableState.Dragged:
+        GuidlineRig.Hide();
+        break;
+      default:
+        break;
+    }
+
+    Current = state;
+    // State enter
+    switch (Current) {
+      case SelectableState.Idle:
+        _renderer.enabled = false;
+        break;
+      case SelectableState.Hovered:
+        _renderer.enabled = true;
+        _renderer.material.color = _hoveredColor;
+        break;
+      case SelectableState.Selected:
+        _renderer.material.color = _selectedColor;
+        StartCoroutine(FlexibleHandle.AdaptVisibilitiesCoroutine());
+        break;
+      case SelectableState.Dragged:
+        ViewSpaceMover.SetPlane();
+        GuidlineRig.UpdateGrids(_renderer.bounds);
+        GuidlineRig.Show();
+        break;
+      default:
+        break;
     }
   }
-  private SelectableState _current_OnlyForCache;
+
   private void OnEnable() {
     ViewSpaceMover = new ViewSpaceMover(Camera.main, this);
   }
@@ -67,33 +74,35 @@ public class Selectable : MonoBehaviour {
     }
   }
 
-  private void Update() {
+  private void LateUpdate() {
     // State update;
     switch (Current) {
       case SelectableState.Idle:
         if (GameManager.Hovered == this) {
-          Current = SelectableState.Hovered;
+          TransitTo(SelectableState.Hovered);
         }
         break;
       case SelectableState.Hovered:
         if (GameManager.Hovered == this) {
           if (GameManager.Selected == this) {
-            Current = SelectableState.Selected;
+            TransitTo(SelectableState.Selected);
           }
-        } else Current = SelectableState.Idle;
+        } else {
+          TransitTo(SelectableState.Idle);
+        }
         break;
       case SelectableState.Selected:
         if (GameManager.Selected != this) {
-          Current = SelectableState.Hovered;
+          TransitTo(SelectableState.Hovered);
         } else if (GameManager.IsDragging && !Handle.Dragged) {
-          Current = SelectableState.Dragged;
+          TransitTo(SelectableState.Dragged);
         }
         break;
       case SelectableState.Dragged:
         ViewSpaceMover.UpdatePosition();
         GuidlineRig.UpdatePositions(_renderer.bounds);
         if (!GameManager.IsDragging) {
-          Current = SelectableState.Selected;
+          TransitTo(SelectableState.Selected);
         }
         break;
       default:
