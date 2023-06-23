@@ -11,6 +11,15 @@ public class MoveHandle : FlexibleHandle {
     }
   }
 
+  protected override void DisplayAs(Appearance state) {
+    base.DisplayAs(state);
+    if (state == Appearance.Selected) {
+      ShowGroup(GizmoGroup.MoveHandle3D);
+    } else {
+      HideGroup(GizmoGroup.MoveHandle3D);
+    }
+  }
+
   private IEnumerator MoveCoroutine() {
     yield return new WaitForSeconds(0.1f);
     GameManager.Selected.ViewSpaceMover.SetPlane();

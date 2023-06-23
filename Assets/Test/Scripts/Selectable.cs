@@ -94,7 +94,7 @@ public class Selectable : MonoBehaviour {
       case SelectableState.Selected:
         if (GameManager.Selected != this) {
           TransitTo(SelectableState.Hovered);
-        } else if (GameManager.IsDragging && !Handle.Dragged) {
+        } else if (GameManager.IsDragging && !Gizmo.Dragged && !Gizmo.Hovered) {
           TransitTo(SelectableState.Dragged);
         }
         break;

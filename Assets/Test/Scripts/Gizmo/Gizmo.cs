@@ -1,28 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum GizmoGroup {
-  Default,
+  Undefined,
   Frame,
   MoveHandle,
+  MoveHandle3D,
   ScaleIndicator,
   AngleIndicator,
 }
 
 public enum GizmoAnchor {
-  Default,
-  TopLeft,
-  TopRight,
-  BottomLeft,
-  BottomRight,
+  Undefined,
   Center,
-  Top,
-  Bottom,
-  Left,
-  Right,
+  Top, Bottom, Left, Right,
+  TL, TR, BL, BR,
+  X, Y, Z,
 }
 
 public class Gizmo : MonoBehaviour {
+  public static Gizmo Hovered { get; protected set; }
+  public static Gizmo Dragged { get; protected set; }
+  public static Gizmo Selected { get; protected set; }
   public static readonly Dictionary<GizmoGroup, Dictionary<GizmoAnchor, Gizmo>> Catalog =
       new Dictionary<GizmoGroup, Dictionary<GizmoAnchor, Gizmo>>();
 
@@ -30,29 +30,6 @@ public class Gizmo : MonoBehaviour {
   public GizmoAnchor Anchor => _anchor;
   [SerializeField] protected GizmoGroup _group;
   [SerializeField] protected GizmoAnchor _anchor;
-
-#if UNITY_EDITOR
-  private static readonly Dictionary<string, GizmoGroup> _prefixToType =
-      new Dictionary<string, GizmoGroup>() {
-          { "Frame", GizmoGroup.Frame },
-          { "MoveHandle", GizmoGroup.MoveHandle },
-          { "ScaleIndicator", GizmoGroup.ScaleIndicator },
-          { "AngleIndicator", GizmoGroup.AngleIndicator },
-      };
-
-  private static readonly Dictionary<string, GizmoAnchor> _suffixToAnchor =
-      new Dictionary<string, GizmoAnchor>() {
-          { "TL", GizmoAnchor.TopLeft },
-          { "TR", GizmoAnchor.TopRight },
-          { "BL", GizmoAnchor.BottomLeft },
-          { "BR", GizmoAnchor.BottomRight },
-          { "Center", GizmoAnchor.Center },
-          { "Top", GizmoAnchor.Top },
-          { "Bottom", GizmoAnchor.Bottom },
-          { "Left", GizmoAnchor.Left },
-          { "Right", GizmoAnchor.Right },
-      };
-#endif
 
   public bool isShown => gameObject.activeSelf;
 
@@ -111,11 +88,10 @@ public class Gizmo : MonoBehaviour {
 
   protected virtual void OnValidate() {
     string[] nameParts = name.Split('_');
-    if (_prefixToType.TryGetValue(nameParts[0], out GizmoGroup type)) {
-      _group = type;
+    if (nameParts.Length > 0 && Enum.TryParse(nameParts[0], out GizmoGroup group)) {
+      _group = group;
     }
-
-    if (nameParts.Length > 1 && _suffixToAnchor.TryGetValue(nameParts[1], out GizmoAnchor anchor)) {
+    if (nameParts.Length > 1 && Enum.TryParse(nameParts[1], out GizmoAnchor anchor)) {
       _anchor = anchor;
     }
   }

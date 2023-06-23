@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class FlexibleHandle : Handle, IPointerClickHandler {
+  protected enum Appearance {
+    Idle,
+    Dragged,
+    Selected,
+  }
+
   private static readonly Color _normalColor = Color.white;
   private static readonly Color _hoveredColor = new Color(0.8f, 0.8f, 0.8f, 1);
   public static readonly Dictionary<GizmoGroup, IReadOnlyList<GizmoAnchor>> PreferredAnchors =
@@ -17,13 +23,39 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
   private Image _selectedImage;
   private RectTransform _rectTransform;
   private Vector3 _mouseDownPosition;
+
+  public static IEnumerator AdaptVisibilitiesCoroutine() {
+    // Wait after the rect transform is updated to let the in-screen check be
+    // available.
+    //
+    // For some unknown reason 'yied return null' does not work here, and we
+    // didn't found a force update solution.
+    yield return new WaitForSeconds(0.1f);
+    foreach (var pair in PreferredAnchors) {
+      var group = pair.Key;
+      var anchors = pair.Value;
+      for(int i = 0; i < anchors.Count; i++) {
+        var flexibleHandle = Catalog[group][anchors[i]] as FlexibleHandle;
+        if (flexibleHandle.IsInScreen()) {
+          if (!flexibleHandle.isShown) {
+            flexibleHandle.ShowUnique();
+          }
+          break;
+        }
+      }
+    }
+    yield return null;
+  }
+
   public virtual void OnPointerClick(PointerEventData eventData) {
     if (Input.mousePosition == _mouseDownPosition) {
-      bool alreadySelected = Selected == this;
-      Selected = alreadySelected ? null : this;
-      _idleGO.SetActive(alreadySelected);
-      _draggedGO.SetActive(false);
-      _selectedGO.SetActive(!alreadySelected);
+      if (Selected == this) {
+        Selected = null;
+        DisplayAs(Appearance.Idle);
+      } else {
+        Selected = this;
+        DisplayAs(Appearance.Selected);
+      }
     }
   }
 
@@ -39,33 +71,29 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
 
   public override void OnPointerDown(PointerEventData eventData) {
     base.OnPointerDown(eventData);
-    _idleGO.SetActive(false);
-    _draggedGO.SetActive(true);
-    _selectedGO.SetActive(false);
+    DisplayAs(Appearance.Dragged);
     _mouseDownPosition = Input.mousePosition;
   }
 
   public override void OnPointerUp(PointerEventData eventData) {
     base.OnPointerUp(eventData);
-    _idleGO.SetActive(true);
-    _draggedGO.SetActive(false);
-    _selectedGO.SetActive(false);
+    if (Selected == this) {
+      DisplayAs(Appearance.Selected);
+    } else {
+      DisplayAs(Appearance.Idle);
+    }
   }
 
-  protected virtual void OnDisable() {
-    if (Hovered == this) {
-      Hovered = null;
+  protected void OnEnable() {
+    if (Selected && Selected.Group == this.Group) {
+      DisplayAs(Appearance.Selected);
+    } else {
+      DisplayAs(Appearance.Idle);
     }
-    if (Dragged == this) {
-      Dragged = null;
-    }
-    if (Selected == this) {
-      Selected = null;
-    }
-    _idleImage.color = _selectedImage.color = _normalColor;
-    _idleGO.SetActive(true);
-    _draggedGO.SetActive(false);
-    _selectedGO.SetActive(false);
+  }
+
+  protected void OnDisable() {
+    DisplayAs(Appearance.Idle);
   }
 
   protected override void Awake() {
@@ -92,27 +120,24 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
     }
   }
 
-  public static IEnumerator AdaptVisibilitiesCoroutine() {
-    // Wait after the rect transform is updated to let the in-screen check be
-    // available.
-    //
-    // For some unknown reason 'yied return null' does not work here, and we
-    // didn't found a force update solution.
-    yield return new WaitForSeconds(0.1f);
-    foreach (var pair in PreferredAnchors) {
-      var group = pair.Key;
-      var anchors = pair.Value;
-      for(int i = 0; i < anchors.Count; i++) {
-        var flexibleHandle = Catalog[group][anchors[i]] as FlexibleHandle;
-        if (flexibleHandle.IsInScreen()) {
-          if (!flexibleHandle.isShown) {
-            flexibleHandle.ShowUnique();
-          }
-          break;
-        }
-      }
+  protected virtual void DisplayAs(Appearance state) {
+    switch (state) {
+      case Appearance.Idle:
+        _idleGO.SetActive(true);
+        _draggedGO.SetActive(false);
+        _selectedGO.SetActive(false);
+        break;
+      case Appearance.Dragged:
+        _idleGO.SetActive(false);
+        _draggedGO.SetActive(true);
+        _selectedGO.SetActive(false);
+        break;
+      case Appearance.Selected:
+        _idleGO.SetActive(false);
+        _draggedGO.SetActive(false);
+        _selectedGO.SetActive(true);
+        break;
     }
-    yield return null;
   }
 
   private bool IsInScreen() {

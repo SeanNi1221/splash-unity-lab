@@ -10,22 +10,22 @@ public class ScaleHandle : Handle {
   private static float _inputDeltaY => Input.GetAxis("Mouse Y");
   private static Dictionary<GizmoAnchor, System.Func<float>> _anchorToScaleDelta =
       new Dictionary<GizmoAnchor, System.Func<float>>() {
-        [GizmoAnchor.TopLeft] = () => {
+        [GizmoAnchor.TL] = () => {
           float rawDelta = _inputDeltaX < _inputDeltaY ?
               Mathf.Max(-_inputDeltaX, _inputDeltaY) : Mathf.Min(-_inputDeltaX, _inputDeltaY);
           return rawDelta * _scaleRatio;
         },
-        [GizmoAnchor.TopRight] = () => {
+        [GizmoAnchor.TR] = () => {
           float rawDelta = _inputDeltaX > -_inputDeltaY ?
               Mathf.Max(_inputDeltaX, _inputDeltaY) : Mathf.Min(_inputDeltaX, _inputDeltaY);
           return rawDelta * _scaleRatio;
         },
-        [GizmoAnchor.BottomLeft] = () => {
+        [GizmoAnchor.BL] = () => {
           float rawDelta = _inputDeltaX < -_inputDeltaY ?
               Mathf.Max(-_inputDeltaX, -_inputDeltaY) : Mathf.Min(-_inputDeltaX, -_inputDeltaY);
           return rawDelta * _scaleRatio;
         },
-        [GizmoAnchor.BottomRight] = () => {
+        [GizmoAnchor.BR] = () => {
           float rawDelta = _inputDeltaX > _inputDeltaY ?
               Mathf.Max(_inputDeltaX, -_inputDeltaY) : Mathf.Min(_inputDeltaX, -_inputDeltaY);
           return rawDelta * _scaleRatio;
@@ -34,10 +34,10 @@ public class ScaleHandle : Handle {
 # if UNITY_EDITOR
   private static Dictionary<GizmoAnchor, string> _anchorToCursor =
       new Dictionary<GizmoAnchor, string>() {
-        [GizmoAnchor.TopLeft] = "Assets/Test/Sprites/ScaleCursorTL.png",
-        [GizmoAnchor.TopRight] = "Assets/Test/Sprites/ScaleCursorTR.png",
-        [GizmoAnchor.BottomLeft] = "Assets/Test/Sprites/ScaleCursorTR.png",
-        [GizmoAnchor.BottomRight] = "Assets/Test/Sprites/ScaleCursorTL.png",
+        [GizmoAnchor.TL] = "Assets/Test/Sprites/ScaleCursorTL.png",
+        [GizmoAnchor.TR] = "Assets/Test/Sprites/ScaleCursorTR.png",
+        [GizmoAnchor.BL] = "Assets/Test/Sprites/ScaleCursorTR.png",
+        [GizmoAnchor.BR] = "Assets/Test/Sprites/ScaleCursorTL.png",
       };
 # endif
 

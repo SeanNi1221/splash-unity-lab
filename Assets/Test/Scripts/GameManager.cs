@@ -62,12 +62,11 @@ public class GameManager : MonoBehaviour
 
   private void TrySelect() {
     if (Input.GetMouseButtonDown(0)) {
-      if (Handle.Hovered) {
+      if (Gizmo.Hovered) {
         return;
       } else if (Hovered) {
         Selected = Hovered;
       } else {
-        Debug.Log("Deselect");
         Selected = null;
       }
     }
