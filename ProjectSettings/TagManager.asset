@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Selectable
+  - 
   - Water
   - UI
-  - 
-  - 
+  - Handle3D
+  - Selectable
   - 
   - 
   - 

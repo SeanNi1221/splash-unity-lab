@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6867462487004753930}
   - component: {fileID: 8694999486250730688}
   - component: {fileID: 5998985845035486077}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MoveHandle3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
