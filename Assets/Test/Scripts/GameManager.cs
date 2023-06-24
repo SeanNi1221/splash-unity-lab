@@ -46,10 +46,21 @@ public class GameManager : MonoBehaviour
   }
 
   private void TryHover() {
-    if (Handle.Hovered) {
+    if (Gizmo.Hovered && Gizmo.Hovered is not Handle3D) {
       Hovered = null;
       return;
+    } else if (Selected && Physics.Raycast(_pointerRay, out RaycastHit hitHandle, 1000, 1 << LayerMask.NameToLayer("Handle3D"))) {
+      var handle = hitHandle.collider.GetComponent<Handle3D>();
+      if (handle) {
+        Debug.Log("Disabled selectable collider");
+        Selected.GetComponent<Collider>().enabled = false;
+      } else {
+        Debug.Log("Enabled selectable collider");
+        Selected.GetComponent<Collider>().enabled = true;
+      }
+      return;
     }
+
     if (Physics.Raycast(_pointerRay, out RaycastHit hit, 1000, 1 << LayerMask.NameToLayer("Selectable"))) {
       var selectable = hit.collider.GetComponent<Selectable>();
       if (selectable) {
