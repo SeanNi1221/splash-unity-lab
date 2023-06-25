@@ -52,11 +52,7 @@ public class GameManager : MonoBehaviour
     } else if (Selected && Physics.Raycast(_pointerRay, out RaycastHit hitHandle, 1000, 1 << LayerMask.NameToLayer("Handle3D"))) {
       var handle = hitHandle.collider.GetComponent<Handle3D>();
       if (handle) {
-        Debug.Log("Disabled selectable collider");
         Selected.GetComponent<Collider>().enabled = false;
-      } else {
-        Debug.Log("Enabled selectable collider");
-        Selected.GetComponent<Collider>().enabled = true;
       }
       return;
     }

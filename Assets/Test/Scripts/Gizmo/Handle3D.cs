@@ -20,6 +20,7 @@ public class Handle3D : Gizmo {
   }
 
   protected virtual void OnMouseExit() {
+    GameManager.Selected.gameObject.GetComponent<Collider>().enabled = true;
     if (Dragged != this && Hovered == this) {
       Hovered = null;
       _renderer.material.color = _normalColor;
