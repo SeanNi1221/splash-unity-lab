@@ -49,12 +49,14 @@ public class GameManager : MonoBehaviour
     if (Gizmo.Hovered && Gizmo.Hovered is not Handle3D) {
       Hovered = null;
       return;
-    } else if (Selected && Physics.Raycast(_pointerRay, out RaycastHit hitHandle, 1000, 1 << LayerMask.NameToLayer("Handle3D"))) {
-      var handle = hitHandle.collider.GetComponent<Handle3D>();
-      if (handle) {
+    }
+
+    if (Selected) {
+      if (Physics.Raycast(_pointerRay, out RaycastHit hitHandle3D, 1000, 1 << LayerMask.NameToLayer("Handle3D"))) {
         Selected.GetComponent<Collider>().enabled = false;
+      } else {
+        Selected.GetComponent<Collider>().enabled = true;
       }
-      return;
     }
 
     if (Physics.Raycast(_pointerRay, out RaycastHit hit, 1000, 1 << LayerMask.NameToLayer("Selectable"))) {
