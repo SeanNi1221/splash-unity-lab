@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
         GizmoAnchor.Right,
         GizmoAnchor.Left,
     };
+    FlexibleHandle.PreferredAnchors[GizmoGroup.RotateHandle] = new List<GizmoAnchor>() {
+        GizmoAnchor.Bottom,
+        GizmoAnchor.Top,
+    };
   }
 
   void Update() {

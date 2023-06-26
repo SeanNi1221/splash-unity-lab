@@ -7,6 +7,8 @@ public enum GizmoGroup {
   Frame,
   MoveHandle,
   MoveHandle3D,
+  RotateHandle,
+  RotateHandle3D,
   ScaleIndicator,
   AngleIndicator,
 }
