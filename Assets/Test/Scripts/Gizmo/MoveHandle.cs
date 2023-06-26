@@ -15,9 +15,14 @@ public class MoveHandle : FlexibleHandle {
     base.DisplayAs(state);
     if (state == Appearance.Selected) {
       ShowGroup(GizmoGroup.MoveHandle3D);
+      HideGroup(GizmoGroup.RotateHandle3D);
     } else {
       HideGroup(GizmoGroup.MoveHandle3D);
     }
+  }
+
+  protected void OnDisable() {
+    DisplayAs(Dragged is MoveHandle3D ? Appearance.Selected : Appearance.Idle);
   }
 
   private IEnumerator MoveCoroutine() {
@@ -26,6 +31,7 @@ public class MoveHandle : FlexibleHandle {
     GuidlineRig.UpdateGrids(GameManager.Selected.Renderer.bounds);
     GuidlineRig.Show();
     HideGroup(GizmoGroup.Frame);
+    HideGroup(GizmoGroup.RotateHandle);
     while (Dragged == this) {
       GameManager.Selected.ViewSpaceMover.UpdatePosition();
       GuidlineRig.UpdatePositions(GameManager.Selected.Renderer.bounds);

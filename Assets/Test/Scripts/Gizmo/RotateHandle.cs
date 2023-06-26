@@ -16,6 +16,20 @@ public class RotateHandle : FlexibleHandle {
     }
   }
 
+  protected override void DisplayAs(Appearance state) {
+    base.DisplayAs(state);
+    if (state == Appearance.Selected) {
+      ShowGroup(GizmoGroup.RotateHandle3D);
+      HideGroup(GizmoGroup.MoveHandle3D);
+    } else {
+      HideGroup(GizmoGroup.RotateHandle3D);
+    }
+  }
+
+  protected void OnDisable() {
+    DisplayAs(Dragged is RotateHandle3D ? Appearance.Selected : Appearance.Idle);
+  }
+
   private IEnumerator RotateCoroutine() {
     yield return new WaitForSeconds(0.1f);
     GameManager.Selected.ViewSpaceMover.SetPlane();

@@ -92,10 +92,6 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
     }
   }
 
-  protected void OnDisable() {
-    DisplayAs(Dragged is Handle3D ? Appearance.Selected : Appearance.Idle);
-  }
-
   protected override void Awake() {
     base.Awake();
     _idleImage = _idleGO.GetComponent<Image>();
