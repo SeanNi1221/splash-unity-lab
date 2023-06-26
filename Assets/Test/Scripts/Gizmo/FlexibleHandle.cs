@@ -93,7 +93,7 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
   }
 
   protected void OnDisable() {
-    DisplayAs(Appearance.Idle);
+    DisplayAs(Dragged is Handle3D ? Appearance.Selected : Appearance.Idle);
   }
 
   protected override void Awake() {

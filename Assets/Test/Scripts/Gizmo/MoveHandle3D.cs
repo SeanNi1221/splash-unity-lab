@@ -4,10 +4,33 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class MoveHandle3D : Handle3D {
-  private static readonly Dictionary<GizmoAnchor, UnityAction> _doMove =
-      new Dictionary<GizmoAnchor, UnityAction>() {
-        { GizmoAnchor.X, () => GameManager.Selected.transform.position += Vector3.right * Time.deltaTime },
-        { GizmoAnchor.Y, () => GameManager.Selected.transform.position += Vector3.up * Time.deltaTime },
-        { GizmoAnchor.Z, () => GameManager.Selected.transform.position += Vector3.forward * Time.deltaTime },
+  private static readonly Dictionary<GizmoAnchor, Vector3> _anchorToAxis =
+      new Dictionary<GizmoAnchor, Vector3>() {
+        { GizmoAnchor.X, Vector3.right },
+        { GizmoAnchor.Y, Vector3.up },
+        { GizmoAnchor.Z, Vector3.back },
       };
+
+  protected override void OnMouseDown() {
+    base.OnMouseDown();
+    StartCoroutine(MoveAlongCoroutine(GameManager.Selected, _anchorToAxis[Anchor]));
+  }
+
+  private IEnumerator MoveAlongCoroutine(Selectable obj, Vector3 axis) {
+    Vector3 initialPosition = obj.transform.position;
+    Vector3 initialMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
+        Input.mousePosition.x,
+        Input.mousePosition.y,
+        Vector3.Distance(Camera.main.transform.position, obj.transform.position)));
+    while (Dragged == this) {
+      Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
+          Input.mousePosition.x,
+          Input.mousePosition.y,
+          Vector3.Distance(Camera.main.transform.position, obj.transform.position)));
+      Vector3 delta = mousePosition - initialMousePosition;
+      Vector3 projectedDelta = Vector3.Project(delta, axis);
+      obj.transform.position = initialPosition + projectedDelta;
+      yield return null;
+    }
+  }
 }
