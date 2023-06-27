@@ -896,9 +896,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 3
   _anchor: 12
-  _normalColor: {r: 0.113000035, g: 0.49736676, b: 1, a: 0.3}
-  _hoveredColor: {r: 0.11372549, g: 0.49803922, b: 1, a: 0.5}
-  _draggedColor: {r: 0.11372549, g: 0.49803922, b: 1, a: 1}
   _renderer: {fileID: 342822985}
 --- !u!1001 &373153898
 PrefabInstance:
@@ -1155,9 +1152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 3
   _anchor: 11
-  _normalColor: {r: 0.490196, g: 1, b: 0.3137253, a: 0.3}
-  _hoveredColor: {r: 0.490196, g: 1, b: 0.3137253, a: 0.5}
-  _draggedColor: {r: 0.490196, g: 1, b: 0.3137253, a: 1}
   _renderer: {fileID: 419560428}
 --- !u!23 &419560428 stripped
 MeshRenderer:
@@ -3332,9 +3326,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 5
   _anchor: 12
-  _normalColor: {r: 0.11372549, g: 0.49803922, b: 1, a: 0.3}
-  _hoveredColor: {r: 0.11372549, g: 0.49803922, b: 1, a: 0.5}
-  _draggedColor: {r: 0.11372549, g: 0.49803922, b: 1, a: 1}
   _renderer: {fileID: 1075533213}
 --- !u!23 &1075533213 stripped
 MeshRenderer:
@@ -3391,9 +3382,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 5
   _anchor: 1
-  _normalColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.101960786}
-  _hoveredColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.101960786}
-  _draggedColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.101960786}
   _renderer: {fileID: 1115584460}
 --- !u!135 &1115584459
 SphereCollider:
@@ -4333,9 +4321,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 3
   _anchor: 10
-  _normalColor: {r: 0.9811321, g: 0.31007475, b: 0.41224533, a: 0.3}
-  _hoveredColor: {r: 0.98039216, g: 0.30980393, b: 0.4117647, a: 0.5}
-  _draggedColor: {r: 0.98039216, g: 0.30980393, b: 0.4117647, a: 1}
   _renderer: {fileID: 1304394331}
 --- !u!23 &1304394331 stripped
 MeshRenderer:
@@ -5954,9 +5939,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 5
   _anchor: 11
-  _normalColor: {r: 0.490196, g: 1, b: 0.3137253, a: 0.3}
-  _hoveredColor: {r: 0.490196, g: 1, b: 0.3137253, a: 0.5}
-  _draggedColor: {r: 0.490196, g: 1, b: 0.3137253, a: 1}
   _renderer: {fileID: 1693991207}
 --- !u!23 &1693991207 stripped
 MeshRenderer:
@@ -8444,9 +8426,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _group: 5
   _anchor: 10
-  _normalColor: {r: 0.98039216, g: 0.30980393, b: 0.4117647, a: 0.3}
-  _hoveredColor: {r: 0.98039216, g: 0.30980393, b: 0.4117647, a: 0.5}
-  _draggedColor: {r: 0.98039216, g: 0.30980393, b: 0.4117647, a: 1}
   _renderer: {fileID: 3950089875721695771}
 --- !u!33 &5952160291330219155
 MeshFilter:

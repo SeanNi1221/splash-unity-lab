@@ -11,7 +11,9 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: c88454af1fd4b9b4e9c53ba24ee04755,
     type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _FADEOUTAXIS_X
+  - _FADEOUT_AXIS_X
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -118,6 +120,9 @@ Material:
     - _DstBlend: 10
     - _EnableExternalAlpha: 0
     - _EnvironmentReflections: 1
+    - _FADEOUTAXIS: 0
+    - _FADEOUT_AXIS: 0
+    - _Fadout_Strength: 0.888
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
     - _GlossMapScale: 0
@@ -150,8 +155,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0, b: 0, a: 0.69803923}
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.101960786}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
+    - _Base_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.101960786}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 0.69803923}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

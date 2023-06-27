@@ -10,12 +10,12 @@ public class Handle3D : Gizmo {
     { GizmoAnchor.Z, new Color(0, 0.4f, 1) },
   };
 
-  protected const float _normalAlpha = 0.3f;
-  protected const float _hoveredAlpha = 0.5f;
+  protected const float _normalAlpha = 0.4f;
+  protected const float _hoveredAlpha = 0.7f;
   protected const float _draggedAlpha = 1f;
   private const string _baseColorRef = "_BaseColor";
   [SerializeField] protected Renderer _renderer;
-  private MaterialPropertyBlock _propertyBlock;
+  protected MaterialPropertyBlock _propertyBlock;
   private Color _normalColor;
   private Color _hoveredColor;
   private Color _draggedColor;
