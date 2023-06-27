@@ -75,12 +75,16 @@ public class GameManager : MonoBehaviour
 
   private void TrySelect() {
     if (Input.GetMouseButtonDown(0)) {
+      if (Physics.Raycast(_pointerRay, out RaycastHit hitHandle3D, 1000, 1 << LayerMask.NameToLayer("Handle3D"))) {
+        return;
+      }
       if (Gizmo.Hovered) {
         return;
       } else if (Hovered) {
         Selected = Hovered;
       } else {
         Selected = null;
+        Debug.LogWarning("---->Selction cleared");
       }
     }
   }
