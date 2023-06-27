@@ -7,7 +7,7 @@ public class RotateHandle3D : Handle3D
 {
   private const string _angleColorRef = "_AngleColor";
   private const string _angleStartRef = "_AngleStart";
-  private const string _angleEndRef = "_AngleEnd";
+  private const string _angleRangeRef = "_AngleRange";
   private static readonly Dictionary<GizmoAnchor, Vector3> _anchorToAxis =
       new Dictionary<GizmoAnchor, Vector3>() {
           { GizmoAnchor.X, Vector3.right },
@@ -46,6 +46,7 @@ public class RotateHandle3D : Handle3D
     SetMaterialStartAngle(startAngle);
 
     Vector3 oldPointerDirection = initialPointerDirection;
+    float angleRange = 0f;
     while (Dragged == this) {
       // Calculates mouse angle
       Vector3 pointerDirection = GetPointerOnZplane() - center;
@@ -56,10 +57,9 @@ public class RotateHandle3D : Handle3D
       // Rotates the object.
       obj.transform.RotateAround(center, transform.forward, angleDelta);
 
-      float endAngle = Vector3.SignedAngle(pointerDirection,
-                                           initialPointerDirection,
-                                           transform.forward);
-      SetMaterialEndAngle(endAngle);
+      angleRange += angleDelta;
+      Debug.Log(angleRange);
+      SetMaterialAngleRange(angleRange);
       yield return null;
     }
     ResetMaterialAngles();
@@ -75,17 +75,16 @@ public class RotateHandle3D : Handle3D
   private void SetMaterialStartAngle(float angle) {
     _propertyBlock.SetFloat(_angleStartRef, angle);
     _renderer.SetPropertyBlock(_propertyBlock, 0);
-    Debug.Log($"SetStartAngle({angle})");
   }
 
-  private void SetMaterialEndAngle(float angle) {
-    _propertyBlock.SetFloat(_angleEndRef, angle);
+  private void SetMaterialAngleRange(float angle) {
+    _propertyBlock.SetFloat(_angleRangeRef, angle);
     _renderer.SetPropertyBlock(_propertyBlock, 0);
   }
 
   private void ResetMaterialAngles() {
     _propertyBlock.SetFloat(_angleStartRef, 0f);
-    _propertyBlock.SetFloat(_angleEndRef, 0f);
+    _propertyBlock.SetFloat(_angleRangeRef, 0f);
     _renderer.SetPropertyBlock(_propertyBlock, 0);
   }
 
