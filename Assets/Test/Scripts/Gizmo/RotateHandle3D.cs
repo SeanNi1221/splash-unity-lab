@@ -56,7 +56,8 @@ public class RotateHandle3D : Handle3D
       oldPointerDirection = pointerDirection;
       // Rotates the object.
       obj.transform.RotateAround(center, transform.forward, angleDelta);
-
+      Debug.DrawLine(center, center + initialPointerDirection, Color.white);
+      Debug.DrawLine(center, center + pointerDirection, Color.white);
       angleRange -= angleDelta;
       SetMaterialAngleRange(angleRange);
       yield return null;
@@ -66,9 +67,30 @@ public class RotateHandle3D : Handle3D
 
   private Vector3 GetPointerOnZplane() {
     Ray pointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-    Plane zPlane = new Plane(transform.forward, transform.position);
-    zPlane.Raycast(pointerRay, out float enter);
-    return pointerRay.GetPoint(Mathf.Abs(enter));
+    Vector3 zNormal = transform.forward;
+    // zPlane: the plane that this ring-shaped handle lies on.
+    Plane zPlane = new Plane(zNormal, transform.position);
+    float zAngle = Vector3.Angle(pointerRay.direction, zNormal);
+    if (zAngle < 85f || zAngle > 95f) {
+      zPlane.Raycast(pointerRay, out float enter);
+      return pointerRay.GetPoint(Mathf.Abs(enter));
+    } else {
+
+      // pointerPlane: the plane that is perpendicular to the pointerRay and
+      // passes through the center.
+      Plane pointerPlane = new Plane(pointerRay.direction, transform.position);
+      pointerPlane.Raycast(pointerRay, out float pointerEnter);
+      Vector3 pointerPoint = pointerRay.GetPoint(pointerEnter);
+
+      Ray pointerToZ = new Ray(pointerPoint, zNormal);
+      zPlane.Raycast(pointerToZ, out float zEnter);
+      Vector3 upPoint = pointerToZ.GetPoint(zEnter);
+      float radius = transform.lossyScale.x / 2f;
+      float upDistance = Mathf.Min(Vector3.Distance(transform.position, upPoint), radius);
+      float forwardDistance = Mathf.Sqrt(radius * radius - upDistance * upDistance);
+      Vector3 circlePoint = upPoint + -pointerRay.direction * forwardDistance;
+      return circlePoint;
+    }
   }
 
   private void SetMaterialStartAngle(float angle) {
