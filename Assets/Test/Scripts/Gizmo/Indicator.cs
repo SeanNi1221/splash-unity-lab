@@ -5,6 +5,7 @@ using TMPro;
 
 public class Indicator : Gizmo {
   [SerializeField] protected TextMeshProUGUI _text;
+
   public override void SetValue(object text) {
     _text.text = (string)text;
   }

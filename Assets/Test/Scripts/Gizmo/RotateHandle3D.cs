@@ -28,9 +28,11 @@ public class RotateHandle3D : Handle3D
     _propertyBlock.SetColor(_angleColorRef, _angleColor);
     _renderer.SetPropertyBlock(_propertyBlock, 0);
     ResetMaterialAngles();
+    HideGroup(GizmoGroup.RotateIndicator);
   }
 
   private IEnumerator RotateAroundCoroutine(Selectable obj) {
+    ShowGroup(GizmoGroup.RotateIndicator);
     int component = _anchorToComponent[Anchor];
     Vector3 center = obj.transform.position;
     // Stores initial values
@@ -40,6 +42,11 @@ public class RotateHandle3D : Handle3D
                                            transform.forward);
     SetMaterialStartAngle(startAngle);
 
+    // References to the indicators
+    RectTransform line = Gizmo.Catalog[GizmoGroup.RotateIndicator][GizmoAnchor.Center]
+        .GetComponent<RectTransform>();
+    Gizmo text = Gizmo.Catalog[GizmoGroup.RotateIndicator][GizmoAnchor.TC];
+
     Vector3 oldPointerDirection = initialPointerDirection;
     float angleRange = 0f;
     while (Dragged == this) {
@@ -48,16 +55,23 @@ public class RotateHandle3D : Handle3D
       float angleDelta = Vector3.SignedAngle(oldPointerDirection,
                                              pointerDirection,
                                              transform.forward);
-      oldPointerDirection = pointerDirection;
       // Rotates the object.
+      oldPointerDirection = pointerDirection;
       obj.transform.RotateAround(center, transform.forward, angleDelta);
-      Debug.DrawLine(center, center + initialPointerDirection, Color.white);
-      Debug.DrawLine(center, center + pointerDirection, Color.white);
       angleRange -= angleDelta;
       SetMaterialAngleRange(angleRange);
+      // Manages the indicators
+      line.position = Camera.main.WorldToScreenPoint(center);
+      Vector3 lineToMouse = Input.mousePosition - line.position;
+      line.sizeDelta = new Vector2(lineToMouse.magnitude, line.sizeDelta.y);
+      float mouseAngle = Vector2.SignedAngle(Vector2.right, lineToMouse);
+      line.localEulerAngles = new Vector3(0, 0, mouseAngle);
+      text.transform.position = line.position;
+      text.SetValue(-angleRange);
       yield return null;
     }
     ResetMaterialAngles();
+    HideGroup(GizmoGroup.RotateIndicator);
   }
 
   private Vector3 GetPointerOnZplane() {

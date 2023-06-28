@@ -9,6 +9,7 @@ public enum GizmoGroup {
   MoveHandle3D,
   RotateHandle,
   RotateHandle3D,
+  RotateIndicator,
   ScaleIndicator,
   AngleIndicator,
 }
@@ -17,7 +18,7 @@ public enum GizmoAnchor {
   Undefined,
   Center,
   Top, Bottom, Left, Right,
-  TL, TR, BL, BR,
+  TC, TL, TR, BL, BR,
   X, Y, Z,
 }
 
