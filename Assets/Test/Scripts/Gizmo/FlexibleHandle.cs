@@ -11,8 +11,6 @@ public class FlexibleHandle : Handle, IPointerClickHandler {
     Selected,
   }
 
-  private static readonly Color _normalColor = Color.white;
-  private static readonly Color _hoveredColor = new Color(0.8f, 0.8f, 0.8f, 1);
   public static readonly Dictionary<GizmoGroup, IReadOnlyList<GizmoAnchor>> PreferredAnchors =
       new Dictionary<GizmoGroup, IReadOnlyList<GizmoAnchor>>();
   [SerializeField] protected RectTransform _canvasRect;

@@ -15,8 +15,8 @@ public class RotateHandle3D : Handle3D
           { GizmoAnchor.Z, 2 },
       };
   private static readonly Color _angleColor = new Color(0.4980392f, 0.1137255f, 0.7490196f);
-
   protected override float _sizeOnScreen => 300;
+  private static Gizmo resetButton => Gizmo.Catalog[GizmoGroup.ResetButton][GizmoAnchor.Bottom];
 
   protected override void OnMouseDown() {
     base.OnMouseDown();
@@ -32,6 +32,7 @@ public class RotateHandle3D : Handle3D
   }
 
   private IEnumerator RotateAroundCoroutine(Selectable obj) {
+    resetButton.SetValue(obj.transform);
     ShowGroup(GizmoGroup.RotateIndicator);
     int component = _anchorToComponent[Anchor];
     Vector3 center = obj.transform.position;
@@ -72,6 +73,9 @@ public class RotateHandle3D : Handle3D
     }
     ResetMaterialAngles();
     HideGroup(GizmoGroup.RotateIndicator);
+    if (angleRange != 0) {
+      resetButton.Show();
+    }
   }
 
   private Vector3 GetPointerOnZplane() {

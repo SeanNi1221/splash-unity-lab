@@ -12,6 +12,7 @@ public enum GizmoGroup {
   RotateIndicator,
   ScaleIndicator,
   AngleIndicator,
+  ResetButton,
 }
 
 public enum GizmoAnchor {

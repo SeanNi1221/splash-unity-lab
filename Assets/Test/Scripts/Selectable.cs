@@ -50,6 +50,7 @@ public class Selectable : MonoBehaviour {
       case SelectableState.Selected:
         _renderer.material.color = _selectedColor;
         StartCoroutine(FlexibleHandle.AdaptVisibilitiesCoroutine());
+        Gizmo.HideGroup(GizmoGroup.ResetButton);
         break;
       case SelectableState.Dragged:
         ViewSpaceMover.SetPlane();

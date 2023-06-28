@@ -13,12 +13,14 @@ public class MoveHandle3D : Handle3D {
 
   protected override float _sizeOnScreen => 150;
 
+  private static Gizmo resetButton => Gizmo.Catalog[GizmoGroup.ResetButton][GizmoAnchor.Bottom];
   protected override void OnMouseDown() {
     base.OnMouseDown();
     StartCoroutine(MoveAlongCoroutine(GameManager.Selected, _anchorToAxis[Anchor]));
   }
 
   private IEnumerator MoveAlongCoroutine(Selectable obj, Vector3 axis) {
+    resetButton.SetValue(obj.transform);
     Vector3 initialPosition = obj.transform.position;
     Vector3 initialMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
         Input.mousePosition.x,
@@ -33,6 +35,9 @@ public class MoveHandle3D : Handle3D {
       Vector3 projectedDelta = Vector3.Project(delta, axis);
       obj.transform.position = initialPosition + projectedDelta;
       yield return null;
+    }
+    if (obj.transform.position != initialPosition) {
+      resetButton.Show();
     }
   }
 }
