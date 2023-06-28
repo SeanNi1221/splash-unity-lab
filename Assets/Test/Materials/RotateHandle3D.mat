@@ -95,7 +95,7 @@ Material:
     - _AlphaClip: 0
     - _AngleEnd: 180
     - _AngleRange: 5
-    - _AngleStart: 81.5
+    - _AngleStart: 0
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
