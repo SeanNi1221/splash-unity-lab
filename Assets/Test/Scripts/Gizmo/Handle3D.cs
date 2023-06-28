@@ -5,7 +5,7 @@ using UnityEngine;
 public class Handle3D : Gizmo {
   protected static readonly Dictionary<GizmoAnchor, Color> _anchorToColor =
       new Dictionary<GizmoAnchor, Color> {
-    { GizmoAnchor.X, new Color(1, 0.1f, 0.2f) },
+    { GizmoAnchor.X, new Color(1, 0.2f, 0.3f) },
     { GizmoAnchor.Y, new Color(0.2f, 1, 0.1f) },
     { GizmoAnchor.Z, new Color(0, 0.4f, 1) },
   };
@@ -14,6 +14,7 @@ public class Handle3D : Gizmo {
   protected const float _hoveredAlpha = 0.7f;
   protected const float _draggedAlpha = 1f;
   private const string _baseColorRef = "_BaseColor";
+  protected virtual float _sizeOnScreen => 200f;
   [SerializeField] protected Renderer _renderer;
   protected MaterialPropertyBlock _propertyBlock;
   private Color _normalColor;
@@ -93,5 +94,16 @@ public class Handle3D : Gizmo {
     if (Dragged) {
       transform.position = GameManager.Selected.transform.position;
     }
+    AdaptSize();
+  }
+
+  private void AdaptSize() {
+    Vector3 origin = transform.position;
+    Vector3 end = origin + Camera.main.transform.up;
+    Vector3 originOnScreen = Camera.main.WorldToScreenPoint(origin);
+    Vector3 endOnScreen = Camera.main.WorldToScreenPoint(end);
+    float magnitudeOnScreen = Vector3.Distance(originOnScreen, endOnScreen);
+    float sizeInWorld = _sizeOnScreen / magnitudeOnScreen;
+    transform.localScale = new Vector3(sizeInWorld, sizeInWorld, sizeInWorld);
   }
 }

@@ -8,21 +8,16 @@ public class RotateHandle3D : Handle3D
   private const string _angleColorRef = "_AngleColor";
   private const string _angleStartRef = "_AngleStart";
   private const string _angleRangeRef = "_AngleRange";
-  private static readonly Dictionary<GizmoAnchor, Vector3> _anchorToAxis =
-      new Dictionary<GizmoAnchor, Vector3>() {
-          { GizmoAnchor.X, Vector3.right },
-          { GizmoAnchor.Y, Vector3.up },
-          { GizmoAnchor.Z, Vector3.forward },
-      };
-
   private static readonly Dictionary<GizmoAnchor, int> _anchorToComponent =
       new Dictionary<GizmoAnchor, int>() {
           { GizmoAnchor.X, 0 },
           { GizmoAnchor.Y, 1 },
           { GizmoAnchor.Z, 2 },
       };
-
   private static readonly Color _angleColor = new Color(0.4980392f, 0.1137255f, 0.7490196f);
+
+  protected override float _sizeOnScreen => 300;
+
   protected override void OnMouseDown() {
     base.OnMouseDown();
     StartCoroutine(RotateAroundCoroutine(GameManager.Selected));

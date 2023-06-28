@@ -11,6 +11,8 @@ public class MoveHandle3D : Handle3D {
         { GizmoAnchor.Z, Vector3.back },
       };
 
+  protected override float _sizeOnScreen => 150;
+
   protected override void OnMouseDown() {
     base.OnMouseDown();
     StartCoroutine(MoveAlongCoroutine(GameManager.Selected, _anchorToAxis[Anchor]));
