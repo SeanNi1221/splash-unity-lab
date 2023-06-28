@@ -94,7 +94,8 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AngleEnd: 180
-    - _AngleStart: 0
+    - _AngleRange: 5
+    - _AngleStart: 81.5
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -124,6 +125,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _AngleColor: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.3224012, g: 0.990566, b: 0.366213, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DragColor: {r: 1, g: 1, b: 1, a: 0}

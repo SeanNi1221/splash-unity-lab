@@ -22,7 +22,7 @@ public class RotateHandle3D : Handle3D
           { GizmoAnchor.Z, 2 },
       };
 
-  private static readonly Color angleColor = Color.magenta;
+  private static readonly Color _angleColor = Color.white;
   protected override void OnMouseDown() {
     base.OnMouseDown();
     StartCoroutine(RotateAroundCoroutine(GameManager.Selected));
@@ -30,7 +30,7 @@ public class RotateHandle3D : Handle3D
 
   protected override void Awake() {
     base.Awake();
-    _propertyBlock.SetColor(_angleColorRef, angleColor);
+    _propertyBlock.SetColor(_angleColorRef, _angleColor);
     _renderer.SetPropertyBlock(_propertyBlock, 0);
     ResetMaterialAngles();
   }
@@ -40,10 +40,11 @@ public class RotateHandle3D : Handle3D
     Vector3 center = obj.transform.position;
     // Stores initial values
     Vector3 initialPointerDirection = GetPointerOnZplane() - center;
-    float startAngle = Vector3.SignedAngle(transform.right,
+    float startAngle = -Vector3.SignedAngle(transform.up,
                                            initialPointerDirection,
                                            transform.forward);
     SetMaterialStartAngle(startAngle);
+    Debug.Log($"Start angle: {startAngle}");
 
     Vector3 oldPointerDirection = initialPointerDirection;
     float angleRange = 0f;
@@ -57,9 +58,13 @@ public class RotateHandle3D : Handle3D
       // Rotates the object.
       obj.transform.RotateAround(center, transform.forward, angleDelta);
 
-      angleRange += angleDelta;
-      Debug.Log(angleRange);
+      angleRange -= angleDelta;
+      // Debug.Log($"Angle range: {angleRange}");
       SetMaterialAngleRange(angleRange);
+
+      Debug.DrawLine(center, center + transform.up, _angleColor);
+      Debug.DrawLine(center, center + initialPointerDirection, _anchorToColor[Anchor]);
+      Debug.DrawLine(center, center + pointerDirection, _angleColor);
       yield return null;
     }
     ResetMaterialAngles();
